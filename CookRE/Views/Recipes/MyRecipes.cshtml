@@ -1,0 +1,168 @@
+﻿@model List<CookRE.Models.Recipe>
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-5">
+
+        <div>
+            <h1 class="fw-bold mb-1">My Recipes</h1>
+
+            <p class="text-muted mb-0">
+                Recipes you have created.
+            </p>
+        </div>
+
+        <a asp-action="Create"
+           class="btn btn-primary">
+            + Create Recipe
+        </a>
+
+    </div>
+
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+
+            <h3 class="fw-semibold">
+                You haven't created any recipes yet.
+            </h3>
+
+            <p class="text-muted">
+                Start sharing your favorite recipes with the community.
+            </p>
+
+            <a asp-action="Create"
+               class="btn btn-primary">
+                Create Your First Recipe
+            </a>
+
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+
+            @foreach (var recipe in Model)
+            {
+                <div class="col-12 col-md-6 col-lg-4">
+
+                    <div class="card h-100 shadow-sm border-0">
+
+                        @if (!string.IsNullOrEmpty(recipe.ImageUrl))
+                        {
+                            <img src="@recipe.ImageUrl"
+                                 class="card-img-top"
+                                 alt="@recipe.Name"
+                                 style="height: 220px; object-fit: cover;" />
+                        }
+
+                        <div class="card-body d-flex flex-column">
+
+                            <h3 class="card-title">
+                                @recipe.Name
+                            </h3>
+
+                            <p class="card-text text-muted">
+                                @recipe.Overview
+                            </p>
+
+                            <div class="mt-auto d-flex gap-2 flex-wrap">
+
+                                <a asp-action="Details"
+                                   asp-route-id="@recipe.Id"
+                                   class="btn btn-primary">
+                                    View
+                                </a>
+
+                                <a asp-action="Edit"
+                                   asp-route-id="@recipe.Id"
+                                   class="btn btn-outline-secondary">
+                                    Edit
+                                </a>
+
+                                <button type="button"
+                                        class="btn btn-outline-danger"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal-@recipe.Id">
+                                    Delete
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Delete Modal -->
+
+                    <div class="modal fade"
+                         id="deleteModal-@recipe.Id"
+                         tabindex="-1"
+                         aria-hidden="true">
+
+                        <div class="modal-dialog modal-dialog-centered">
+
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+
+                                    <h5 class="modal-title">
+                                        Delete Recipe
+                                    </h5>
+
+                                    <button type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="modal">
+                                    </button>
+
+                                </div>
+
+                                <div class="modal-body">
+
+                                    <p>
+                                        Are you sure you want to delete
+                                        <strong>@recipe.Name</strong>?
+                                    </p>
+
+                                    <p class="text-muted mb-0">
+                                        This action cannot be undone.
+                                    </p>
+
+                                </div>
+
+                                <div class="modal-footer">
+
+                                    <button type="button"
+                                            class="btn btn-secondary"
+                                            data-bs-dismiss="modal">
+                                        Cancel
+                                    </button>
+
+                                    <form asp-action="Delete"
+                                          asp-route-id="@recipe.Id"
+                                          method="post">
+
+                                        <button type="submit"
+                                                class="btn btn-danger">
+                                            Delete
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</div>

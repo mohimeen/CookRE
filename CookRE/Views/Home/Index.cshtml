@@ -1,0 +1,170 @@
+﻿@model List<CookRE.Models.Recipe>
+
+<!-- Hero -->
+<section class="py-5 text-center">
+
+    <div class="container py-5">
+
+        <h1 class="display-3 fw-bold mb-4">
+            Discover the Art of Home Cooking
+        </h1>
+
+        <p class="lead text-muted mx-auto mb-4"
+           style="max-width: 700px;">
+            Discover delicious recipes from home cooks
+            and share your own creations with the CookRE community.
+        </p>
+
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+
+            <a asp-controller="Recipes"
+               asp-action="Index"
+               class="btn btn-primary btn-lg">
+                Explore Recipes
+            </a>
+
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <a asp-controller="Recipes"
+                   asp-action="Create"
+                   class="btn btn-outline-secondary btn-lg">
+                    Share a Recipe
+                </a>
+            }
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- Featured Recipes -->
+<section class="container py-5">
+
+    <div class="text-center mb-5">
+
+        <h2 class="fw-bold">
+            Latest Recipes
+        </h2>
+
+        <p class="text-muted">
+            Fresh recipes shared by our community.
+        </p>
+
+    </div>
+
+
+    @if (Model.Any())
+    {
+        <div class="row g-4">
+
+            @foreach (var recipe in Model)
+            {
+                <div class="col-12 col-md-6 col-lg-4">
+
+                    <div class="card h-100 border-0 shadow-sm overflow-hidden">
+
+                        @if (!string.IsNullOrEmpty(recipe.ImageUrl))
+                        {
+                            <img src="@recipe.ImageUrl"
+                                 class="card-img-top"
+                                 alt="@recipe.Name"
+                                 style="height: 230px; object-fit: cover;" />
+                        }
+                        else
+                        {
+                            <div class="bg-light d-flex justify-content-center align-items-center text-muted"
+                                 style="height: 230px;">
+                                No Image
+                            </div>
+                        }
+
+                        <div class="card-body d-flex flex-column p-4">
+
+                            <h3 class="h4 fw-bold">
+                                @recipe.Name
+                            </h3>
+
+                            <p class="text-muted">
+                                @recipe.Overview
+                            </p>
+
+                            <div class="mt-auto">
+
+                                <a asp-controller="Recipes"
+                                   asp-action="Details"
+                                   asp-route-id="@recipe.Id"
+                                   class="btn btn-primary">
+                                    View Recipe
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+
+            <p class="text-muted">
+                No recipes have been shared yet.
+            </p>
+
+        </div>
+    }
+
+
+    <div class="text-center mt-5">
+
+        <a asp-controller="Recipes"
+           asp-action="Index"
+           class="btn btn-outline-secondary">
+            View All Recipes
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- CTA -->
+<section class="container py-5">
+
+    <div class="bg-light rounded-4 p-5 text-center">
+
+        <h2 class="fw-bold mb-3">
+            Share Your Secret Recipe
+        </h2>
+
+        <p class="text-muted mb-4">
+            Bring your favorite recipes to the CookRE community.
+        </p>
+
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <a asp-controller="Recipes"
+               asp-action="Create"
+               class="btn btn-primary">
+                Create Recipe
+            </a>
+        }
+        else
+        {
+            <a asp-area="Identity"
+               asp-page="/Account/Register"
+               class="btn btn-primary">
+                Join CookRE
+            </a>
+        }
+
+    </div>
+
+</section>
