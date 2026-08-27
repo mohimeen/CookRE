@@ -1,53 +1,284 @@
 ﻿@page
 
 @{
-    ViewData["Title"] = "Access Denied";
+    ViewData["Title"] = "Access Restricted";
+    Layout = null;
 }
 
-<div class="container py-5">
+<!DOCTYPE html>
 
-    <div class="row justify-content-center">
+<html lang="en">
 
-        <div class="col-12 col-md-8 col-lg-6">
+<head>
 
-            <div class="card border-0 shadow-sm rounded-4">
+    <meta charset="utf-8" />
 
-                <div class="card-body text-center p-5">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
 
-                    <div class="display-1 mb-3">
-                        🔒
-                    </div>
+    <title>Access Restricted - CookRE</title>
 
-                    <h1 class="fw-bold mb-3">
-                        Access Denied
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap"
+          rel="stylesheet" />
+
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+          rel="stylesheet" />
+
+
+    <!-- Tailwind -->
+    <link rel="stylesheet"
+          href="~/css/tailwind.css"
+          asp-append-version="true" />
+
+</head>
+
+
+<body class="bg-[#fcf9f8]
+             text-[#1b1c1c]
+             antialiased">
+
+
+    <main class="min-h-screen
+                 flex
+                 flex-col md:flex-row
+                 w-full
+                 overflow-hidden">
+
+
+        <!-- ========================= -->
+        <!-- Image Side -->
+        <!-- ========================= -->
+
+        <div class="relative
+                    w-full
+                    md:w-[45%]
+                    lg:w-1/2
+                    h-[409px]
+                    md:h-screen
+                    flex-shrink-0
+                    border-b
+                    md:border-b-0
+                    md:border-r
+                    border-[#dac1bc]">
+
+
+            <div class="absolute
+                        inset-0
+                        bg-cover
+                        bg-center"
+                 style="background-image:
+                 url('https://lh3.googleusercontent.com/aida-public/AB6AXuBelf2gjEp2vulf-u5DjbeejB7iKfxh1TKdC88FthGvTvvrg-elBzCbM3E1jAbqvQ3y0P9KnkFg5dOdDn14Sr225G65CTzzFaZk04sZRwrmWO54914rpVH8AT6Hm2QnGOPUWS9FEfl_anhMt7DbLGr08gbFZnvSKEWNtsuOOVu45p-g2EiUNdnoh52dVQplpU_kFJ1jRcea-rWN_e8TIC0GLdPFYrwHP94XEsEWnJ9NUbCNnfJunkoF');">
+            </div>
+
+
+            <div class="absolute inset-0
+                        bg-gradient-to-t
+                        md:bg-gradient-to-r
+                        from-[#fcf9f8]/40
+                        to-transparent">
+            </div>
+
+        </div>
+
+
+
+        <!-- ========================= -->
+        <!-- Content -->
+        <!-- ========================= -->
+
+        <div class="relative
+                    w-full
+                    md:w-[55%]
+                    lg:w-1/2
+                    flex
+                    flex-col
+                    justify-center
+                    px-4 md:px-12
+                    py-16
+                    z-10
+                    bg-[#fcf9f8]">
+
+
+            <!-- 403 Watermark -->
+            <div aria-hidden="true"
+                 class="absolute
+                        right-0
+                        top-1/2
+                        -translate-y-1/2
+                        opacity-[0.03]
+                        pointer-events-none
+                        select-none
+                        font-['Playfair_Display']
+                        text-[150px]
+                        md:text-[250px]
+                        text-[#6d281a]
+                        tracking-tighter">
+
+                403
+
+            </div>
+
+
+
+            <div class="relative
+                        max-w-lg
+                        mx-auto md:mx-0
+                        w-full
+                        flex
+                        flex-col
+                        items-center
+                        md:items-start
+                        text-center
+                        md:text-left
+                        gap-6">
+
+
+                <!-- Lock Icon -->
+                <div class="w-16 h-16
+                            rounded-full
+                            border border-[#dac1bc]
+                            flex
+                            items-center
+                            justify-center
+                            bg-[#fcf9f8]">
+
+                    <span class="material-symbols-outlined
+                                 text-[32px]
+                                 text-[#8b3e2f]">
+
+                        lock
+
+                    </span>
+
+                </div>
+
+
+
+                <!-- Heading -->
+                <div class="space-y-2">
+
+                    <h1 class="font-['Playfair_Display']
+                               text-[36px]
+                               md:text-[48px]
+                               leading-[1.1]
+                               font-bold
+                               text-[#6d281a]">
+
+                        Access Restricted
+
                     </h1>
 
-                    <p class="text-muted mb-4">
-                        You don't have permission to perform this action.
+
+                    <p class="font-['Inter']
+                              text-[18px]
+                              leading-[1.6]
+                              text-[#55433f]
+                              max-w-md
+                              mx-auto md:mx-0">
+
+                        You don't have permission to access this page.
+                        It appears this recipe is kept under lock and key.
+
                     </p>
 
-                    <div class="d-flex justify-content-center gap-2 flex-wrap">
+                </div>
 
-                        <a asp-controller="Recipes"
-                           asp-action="Index"
-                           class="btn btn-primary">
-                            Explore Recipes
-                        </a>
 
-                        <a asp-controller="Home"
-                           asp-action="Index"
-                           class="btn btn-outline-secondary">
-                            Go Home
-                        </a>
 
-                    </div>
+                <!-- Actions -->
+                <div class="flex
+                            flex-col sm:flex-row
+                            items-center
+                            gap-4
+                            pt-4
+                            w-full sm:w-auto">
 
+
+                    <!-- Home -->
+                    <a asp-area=""
+                       asp-controller="Home"
+                       asp-action="Index"
+                       class="w-full sm:w-auto
+                              flex
+                              items-center
+                              justify-center
+                              gap-2
+                              bg-[#8b3e2f]
+                              text-white
+                              px-10 py-4
+                              rounded-lg
+                              text-[14px]
+                              font-semibold
+                              tracking-[0.05em]
+                              hover:bg-[#6d281a]
+                              hover:-translate-y-[1px]
+                              active:translate-y-0
+                              transition-all
+                              duration-300
+                              no-underline">
+
+                        <span class="material-symbols-outlined text-[20px]">
+                            home
+                        </span>
+
+                        Go to Home
+
+                    </a>
+
+
+
+                    <!-- Explore -->
+                    <a asp-area=""
+                       asp-controller="Recipes"
+                       asp-action="Index"
+                       class="w-full sm:w-auto
+                              flex
+                              items-center
+                              justify-center
+                              gap-2
+                              border border-[#8b3e2f]
+                              text-[#8b3e2f]
+                              bg-transparent
+                              px-10 py-4
+                              rounded-lg
+                              text-[14px]
+                              font-semibold
+                              tracking-[0.05em]
+                              hover:bg-[#ffdad3]
+                              transition-colors
+                              duration-300
+                              no-underline">
+
+                        <span class="material-symbols-outlined text-[20px]">
+                            search
+                        </span>
+
+                        Explore Recipes
+
+                    </a>
+
+                </div>
+
+
+                <div class="pt-10
+                            border-t
+                            border-[#dac1bc]
+                            w-16
+                            mt-6
+                            opacity-50">
                 </div>
 
             </div>
 
         </div>
 
-    </div>
+    </main>
 
-</div>
+
+</body>
+
+</html>

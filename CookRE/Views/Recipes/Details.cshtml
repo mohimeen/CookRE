@@ -1,118 +1,397 @@
 ﻿@using System.Security.Claims
 @model CookRE.Models.Recipe
 
-<div class="container py-5">
+@{
+    ViewData["Title"] = Model.Name;
 
-    <!-- Recipe Header -->
-    <div class="row g-5 align-items-start">
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var isOwner = currentUserId == Model.UserId;
+}
 
-        <!-- Image -->
-        <div class="col-12 col-lg-6">
+
+<section class="py-10 md:py-16">
+
+
+    <!-- ========================= -->
+    <!-- Hero -->
+    <!-- ========================= -->
+
+    <div class="grid grid-cols-1
+                md:grid-cols-12
+                gap-6
+                mb-16">
+
+
+        <!-- Recipe Image -->
+        <div class="md:col-span-7
+                    h-[400px] md:h-[600px]
+                    w-full
+                    border border-[#e5e1d8]
+                    bg-[#f6f3f2]
+                    relative
+                    overflow-hidden
+                    group">
 
             @if (!string.IsNullOrEmpty(Model.ImageUrl))
             {
                 <img src="@Model.ImageUrl"
                      alt="@Model.Name"
-                     class="img-fluid rounded-4 shadow-sm w-100"
-                     style="height: 450px; object-fit: cover;" />
+                     class="w-full h-full
+                                object-cover
+                                transition-transform
+                                duration-700
+                                group-hover:scale-105" />
             }
             else
             {
-                <div class="bg-light rounded-4 d-flex align-items-center justify-content-center"
-                     style="height: 450px;">
-                    <span class="text-muted">No image available</span>
+                <div class="w-full h-full
+                                flex flex-col
+                                items-center
+                                justify-center
+                                gap-3
+                                text-[#87726e]">
+
+                    <span class="material-symbols-outlined text-[64px]">
+                        image
+                    </span>
+
+                    <span class="font-['Inter'] text-[14px]">
+                        No image available
+                    </span>
+
                 </div>
             }
 
         </div>
 
-        <!-- Recipe Info -->
-        <div class="col-12 col-lg-6">
 
-            <span class="text-uppercase text-muted small">
+
+        <!-- Recipe Information -->
+        <div class="md:col-span-5
+                    flex flex-col
+                    justify-center
+                    py-6 md:py-0
+                    md:pl-6">
+
+
+            <p class="font-['Inter']
+                      text-[12px]
+                      font-semibold
+                      tracking-[0.12em]
+                      uppercase
+                      text-[#6d281a]
+                      mb-4">
+
                 Recipe
-            </span>
 
-            <h1 class="display-4 fw-bold mt-2">
-                @Model.Name
-            </h1>
-
-            <p class="lead text-muted mt-4">
-                @Model.Overview
             </p>
 
-            @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.UserId)
-            {
-                <div class="d-flex gap-2 mt-4">
 
+            <h1 class="font-['Playfair_Display']
+                       text-[36px] md:text-[48px]
+                       leading-[1.1]
+                       tracking-[-0.02em]
+                       font-bold
+                       text-[#1b1c1c]
+                       mb-4">
+
+                @Model.Name
+
+            </h1>
+
+
+            <p class="font-['Inter']
+                      text-[18px]
+                      leading-[1.6]
+                      text-[#55433f]
+                      mb-10
+                      max-w-prose">
+
+                @Model.Overview
+
+            </p>
+
+
+
+            <!-- Owner Actions -->
+            @if (isOwner)
+            {
+                <div class="flex
+                                gap-4
+                                items-center
+                                mt-auto
+                                border-t border-[#e5e1d8]
+                                pt-6">
+
+
+                    <!-- Edit -->
                     <a asp-action="Edit"
                        asp-route-id="@Model.Id"
-                       class="btn btn-primary">
-                        Edit Recipe
+                       class="border border-[#6d281a]
+                                  text-[#6d281a]
+                                  px-6 py-3
+                                  font-['Inter']
+                                  text-[14px]
+                                  font-semibold
+                                  tracking-[0.05em]
+                                  rounded
+                                  flex items-center
+                                  gap-2
+                                  hover:bg-[#f6f3f2]
+                                  transition-colors
+                                  no-underline">
+
+                        <span class="material-symbols-outlined text-[18px]">
+                            edit
+                        </span>
+
+                        Edit
+
                     </a>
 
+
+                    <!-- Delete -->
                     <button type="button"
-                            class="btn btn-outline-danger"
-                            data-bs-toggle="modal"
-                            data-bs-target="#deleteModal-@Model.Id">
-                        Delete
+                            id="openModalBtn"
+                            class="border border-[#6d281a]
+                   text-[#6d281a]
+                   px-6 py-3
+                   font-['Inter']
+                   text-[14px]
+                   font-semibold
+                   tracking-[0.05em]
+                   rounded
+                   flex items-center
+                   gap-2
+                   hover:bg-[#f6f3f2]
+                   hover:text-[#ba1a1a]
+                   hover:border-[#ba1a1a]
+                   transition-colors
+                   cursor-pointer">
+
+                        <span class="material-symbols-outlined text-[18px]">
+                            delete
+                        </span>
+
+                        Delete Recipe
+
                     </button>
 
                 </div>
             }
-            <div class="modal fade"
-                 id="deleteModal-@Model.Id"
-                 tabindex="-1"
-                 aria-hidden="true">
 
-                <div class="modal-dialog modal-dialog-centered">
+        </div>
 
-                    <div class="modal-content">
+    </div>
 
-                        <div class="modal-header">
-                            <h5 class="modal-title">
-                                Delete Recipe
-                            </h5>
 
-                            <button type="button"
-                                    class="btn-close"
-                                    data-bs-dismiss="modal"
-                                    aria-label="Close">
-                            </button>
+
+    <!-- ========================= -->
+    <!-- Recipe Content -->
+    <!-- ========================= -->
+
+    <div class="grid grid-cols-1
+                md:grid-cols-12
+                gap-10 md:gap-6">
+
+
+        <!-- ========================= -->
+        <!-- Ingredients -->
+        <!-- ========================= -->
+
+        <aside class="md:col-span-4
+                      bg-[#fcf9f8]
+                      border border-[#e5e1d8]
+                      p-6 md:p-10
+                      h-fit
+                      md:sticky
+                      md:top-28">
+
+
+            <div class="flex
+                        items-center
+                        gap-3
+                        mb-6
+                        pb-3
+                        border-b border-[#e5e1d8]">
+
+                <span class="material-symbols-outlined
+                             text-[#6d281a]">
+
+                    grocery
+
+                </span>
+
+                <h2 class="font-['Playfair_Display']
+                           text-[24px]
+                           leading-[1.3]
+                           font-semibold
+                           text-[#1b1c1c]">
+
+                    Ingredients
+
+                </h2>
+
+            </div>
+
+
+            @{
+                var ingredients = Model.Ingredients?
+                .Split(new[] { "\r\n", "\n" },
+                StringSplitOptions.RemoveEmptyEntries)
+                ?? Array.Empty<string>();
+            }
+
+            <ul class="space-y-4">
+
+                @foreach (var ingredient in ingredients)
+                {
+                    <li class="flex items-start gap-3">
+
+                        <label class="flex items-center cursor-pointer relative mt-1">
+
+                            <input type="checkbox"
+                                   class="custom-checkbox peer sr-only" />
+
+                            <div class="w-5 h-5
+                        border border-[#dac1bc]
+                        bg-[#fcf9f8]
+                        flex items-center justify-center
+                        transition-colors">
+
+                                <svg class="w-3 h-3 text-white hidden"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     viewBox="0 0 24 24">
+
+                                    <path d="M5 13l4 4L19 7"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          stroke-width="3">
+                                    </path>
+
+                                </svg>
+
+                            </div>
+
+                        </label>
+
+                        <span class="font-['Inter']
+                     text-[17px]
+                     leading-[1.6]
+                     text-[#55433f]">
+                            @ingredient
+                        </span>
+
+                    </li>
+                }
+
+            </ul>
+
+        </aside>
+
+
+
+        <!-- ========================= -->
+        <!-- Method -->
+        <!-- ========================= -->
+
+        <div class="md:col-span-8">
+
+
+            <div class="flex
+                        items-center
+                        gap-3
+                        mb-8
+                        pb-3
+                        border-b border-[#e5e1d8]">
+
+                <span class="material-symbols-outlined
+                             text-[#6d281a]">
+
+                    skillet
+
+                </span>
+
+                <h2 class="font-['Playfair_Display']
+                           text-[24px]
+                           leading-[1.3]
+                           font-semibold
+                           text-[#1b1c1c]">
+
+                    Method
+
+                </h2>
+
+            </div>
+
+
+            <div class="relative">
+
+
+                <!-- Decorative Line -->
+                <div class="hidden md:block
+                            absolute
+                            left-[23px]
+                            top-6
+                            bottom-6
+                            w-px
+                            bg-[#dac1bc]">
+                </div>
+
+
+                <div class="flex
+                            flex-col md:flex-row
+                            gap-6
+                            relative">
+
+
+                    <!-- Step Number -->
+                    <div class="md:w-16
+                                flex-shrink-0
+                                relative z-10">
+
+                        <div class="w-12 h-12
+                                    border border-[#6d281a]
+                                    flex items-center
+                                    justify-center
+                                    font-['Playfair_Display']
+                                    text-[24px]
+                                    font-semibold
+                                    text-[#6d281a]
+                                    bg-[#fcf9f8]">
+
+                            1
+
                         </div>
 
-                        <div class="modal-body">
+                    </div>
 
-                            <p>
-                                Are you sure you want to delete
-                                <strong>@Model.Name</strong>?
-                            </p>
 
-                            <p class="text-muted mb-0">
-                                This action cannot be undone.
-                            </p>
+                    <!-- Steps -->
+                    <div class="flex-grow">
 
-                        </div>
 
-                        <div class="modal-footer">
+                        <p class="font-['Inter']
+                                  text-[12px]
+                                  font-semibold
+                                  tracking-[0.12em]
+                                  uppercase
+                                  text-[#6d281a]
+                                  mb-3">
 
-                            <button type="button"
-                                    class="btn btn-secondary"
-                                    data-bs-dismiss="modal">
-                                Cancel
-                            </button>
+                            Cooking Instructions
 
-                            <form asp-action="Delete"
-                                  asp-route-id="@Model.Id"
-                                  method="post">
+                        </p>
 
-                                <button type="submit"
-                                        class="btn btn-danger">
-                                    Delete
-                                </button>
 
-                            </form>
-
+                        <div class="font-['Inter']
+                                    text-[18px]
+                                    leading-[1.8]
+                                    text-[#55433f]
+                                    max-w-prose
+                                    whitespace-pre-line">
+                            @Model.Steps
                         </div>
 
                     </div>
@@ -126,58 +405,240 @@
     </div>
 
 
-    <!-- Ingredients -->
-    <div class="row mt-5">
 
-        <div class="col-12 col-lg-5">
+    <!-- ========================= -->
+    <!-- Back to Recipes -->
+    <!-- ========================= -->
 
-            <h2 class="fw-bold mb-4">
-                Ingredients
-            </h2>
-
-            <div class="card border-0 shadow-sm rounded-4">
-                <div class="card-body p-4">
-
-                    <p class="mb-0">
-                        @Model.Ingredients
-                    </p>
-
-                </div>
-            </div>
-
-        </div>
-
-
-        <!-- Steps -->
-        <div class="col-12 col-lg-7 mt-5 mt-lg-0">
-
-            <h2 class="fw-bold mb-4">
-                Instructions
-            </h2>
-
-            <div class="card border-0 shadow-sm rounded-4">
-                <div class="card-body p-4">
-
-                    <p class="mb-0">
-                        @Model.Steps
-                    </p>
-
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- Back -->
-    <div class="mt-5">
+    <div class="mt-16
+                pt-8
+                border-t border-[#e5e1d8]">
 
         <a asp-action="Index"
-           class="btn btn-outline-secondary">
-            ← Back to Recipes
+           class="inline-flex
+                  items-center
+                  gap-2
+                  font-['Inter']
+                  text-[14px]
+                  font-semibold
+                  tracking-[0.05em]
+                  text-[#6d281a]
+                  hover:text-[#8b3e2f]
+                  transition-colors
+                  no-underline">
+
+            <span class="material-symbols-outlined text-[18px]">
+                arrow_back
+            </span>
+
+            Back to Recipes
+
         </a>
 
     </div>
 
-</div>
+
+</section>
+
+
+
+<!-- ========================= -->
+<!-- Delete Modal -->
+<!-- ========================= -->
+@if (isOwner)
+{
+    <div id="deleteModal"
+         class="fixed inset-0 z-50
+                    flex items-center justify-center
+                    bg-[#1b1c1c]/60
+                    backdrop-blur-sm
+                    opacity-0
+                    pointer-events-none
+                    transition-opacity
+                    duration-300">
+
+        <div id="deleteModalBox"
+             class="bg-[#fcf9f8]
+                        border border-[#dac1bc]
+                        w-full max-w-md
+                        mx-4
+                        p-6
+                        shadow-[0_8px_24px_rgba(45,45,45,0.05)]
+                        scale-95
+                        transition-transform
+                        duration-300">
+
+            <div class="flex items-start gap-4 mb-4">
+
+                <div class="bg-[#ffdad6]
+                                text-[#93000a]
+                                p-2
+                                shrink-0
+                                flex items-center
+                                justify-center">
+
+                    <span class="material-symbols-outlined">
+                        warning
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <h2 class="font-['Playfair_Display']
+                                   text-[24px]
+                                   font-semibold
+                                   text-[#1b1c1c]
+                                   mb-1">
+
+                        Delete Recipe?
+
+                    </h2>
+
+
+                    <p class="font-['Inter']
+                                  text-[16px]
+                                  leading-[1.6]
+                                  text-[#55433f]">
+
+                        Are you sure you want to delete
+
+                        <span class="font-semibold italic text-[#1b1c1c]">
+                            @Model.Name
+                        </span>?
+
+                        This action cannot be undone.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="flex
+                justify-end
+                gap-3
+                mt-6
+                border-t
+                border-[#e5e1d8]
+                pt-4">
+
+                <!-- Cancel -->
+                <button type="button"
+                        id="cancelBtn"
+                        class="border border-[#6d281a]
+                       text-[#6d281a]
+                       px-5 py-2.5
+                       font-['Inter']
+                       text-[14px]
+                       font-semibold
+                       tracking-[0.05em]
+                       rounded
+                       hover:bg-[#f6f3f2]
+                       transition-colors 
+                       cursor-pointer">
+
+                    Cancel
+
+                </button>
+
+
+                <!-- Delete -->
+                <form asp-action="Delete"
+                      asp-route-id="@Model.Id"
+                      method="post"
+                      class="m-0">
+
+                    <button type="submit"
+                            class="border border-[#ba1a1a]
+                           bg-[#ba1a1a]
+                           text-white
+                           px-5 py-2.5
+                           font-['Inter']
+                           text-[14px]
+                           font-semibold
+                           tracking-[0.05em]
+                           rounded
+                           hover:bg-[#93000a]
+                           hover:border-[#93000a]
+                           transition-colors
+                           cursor-pointer">
+
+                        Delete Recipe
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const modal = document.getElementById("deleteModal");
+        const modalBox = document.getElementById("deleteModalBox");
+        const openBtn = document.getElementById("openModalBtn");
+        const cancelBtn = document.getElementById("cancelBtn");
+
+        if (!modal || !modalBox || !openBtn || !cancelBtn) {
+            return;
+        }
+
+        function openModal() {
+
+            modal.classList.remove(
+                "opacity-0",
+                "pointer-events-none"
+            );
+
+            modal.classList.add("opacity-100");
+
+            modalBox.classList.remove("scale-95");
+            modalBox.classList.add("scale-100");
+        }
+
+
+        function closeModal() {
+
+            modal.classList.remove("opacity-100");
+
+            modal.classList.add(
+                "opacity-0",
+                "pointer-events-none"
+            );
+
+            modalBox.classList.remove("scale-100");
+            modalBox.classList.add("scale-95");
+        }
+
+
+        openBtn.addEventListener("click", openModal);
+
+        cancelBtn.addEventListener("click", closeModal);
+
+
+        modal.addEventListener("click", (event) => {
+
+            if (event.target === modal) {
+                closeModal();
+            }
+
+        });
+
+
+        document.addEventListener("keydown", (event) => {
+
+            if (event.key === "Escape") {
+                closeModal();
+            }
+
+        });
+
+    });
+</script>

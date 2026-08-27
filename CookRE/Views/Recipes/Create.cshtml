@@ -1,143 +1,519 @@
 ﻿@model CookRE.Models.Recipe
 
-<div class="container py-5">
+@{
+    ViewData["Title"] = "Create Recipe";
+}
 
-    <div class="row justify-content-center">
 
-        <div class="col-12 col-lg-8">
+<section class="py-10 md:py-16">
 
-            <div class="mb-5">
-                <h1 class="fw-bold">Create a New Recipe</h1>
-                <p class="text-muted">
-                    Share your recipe with the CookRE community.
-                </p>
+    <div class="w-full
+                max-w-4xl
+                mx-auto
+                bg-[#fcf9f8]
+                border border-[#dac1bc]
+                rounded-lg
+                p-6 md:p-10
+                shadow-[0_8px_24px_rgba(45,45,45,0.05)]">
+
+
+        <!-- ========================= -->
+        <!-- Header -->
+        <!-- ========================= -->
+
+        <div class="mb-10 text-center">
+
+            <h1 class="font-['Playfair_Display']
+                       text-[36px] md:text-[48px]
+                       leading-[1.1]
+                       font-bold
+                       text-[#6d281a]
+                       mb-2">
+
+                Author a Recipe
+
+            </h1>
+
+            <p class="font-['Inter']
+                      text-[18px]
+                      leading-[1.6]
+                      text-[#55433f]">
+
+                Share your culinary expertise with the modern cooking community.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- ========================= -->
+        <!-- Form -->
+        <!-- ========================= -->
+
+        <form asp-action="Create"
+              method="post"
+              class="space-y-6">
+
+            @Html.AntiForgeryToken()
+
+
+            <!-- ========================= -->
+            <!-- Recipe Name -->
+            <!-- ========================= -->
+
+            <div>
+
+                <label asp-for="Name"
+                       class="block
+                              font-['Inter']
+                              text-[14px]
+                              font-semibold
+                              tracking-[0.05em]
+                              text-[#1b1c1c]
+                              mb-1">
+
+                    Recipe Name
+
+                    <span class="text-[#ba1a1a]">
+                        *
+                    </span>
+
+                </label>
+
+
+                <input asp-for="Name"
+                       placeholder="e.g., Rustic Sourdough Boule"
+                       class="w-full
+                              bg-[#fcf9f8]
+                              border border-[#dac1bc]
+                              rounded
+                              p-4
+                              font-['Inter']
+                              text-[16px]
+                              text-[#1b1c1c]
+                              outline-none
+                              focus:border-[#6d281a]
+                              focus:ring-1
+                              focus:ring-[#6d281a]
+                              transition-all" />
+
+
+                <span asp-validation-for="Name"
+                      class="block
+                             mt-2
+                             font-['Inter']
+                             text-[12px]
+                             text-[#ba1a1a]">
+                </span>
+
             </div>
 
 
-            <form asp-action="Create" method="post">
 
-                <!-- Recipe Name -->
-                <div class="mb-4">
+            <!-- ========================= -->
+            <!-- Overview -->
+            <!-- ========================= -->
 
-                    <label asp-for="Name" class="form-label fw-semibold">
-                        Recipe Name
-                    </label>
+            <div>
 
-                    <input asp-for="Name"
-                           class="form-control"
-                           placeholder="e.g. Homemade Pizza" />
+                <label asp-for="Overview"
+                       class="block
+                              font-['Inter']
+                              text-[14px]
+                              font-semibold
+                              tracking-[0.05em]
+                              text-[#1b1c1c]
+                              mb-1">
 
-                    <span asp-validation-for="Name"
-                          class="text-danger">
-                    </span>
+                    Overview
 
-                </div>
+                </label>
 
 
-                <!-- Overview -->
-                <div class="mb-4">
+                <textarea asp-for="Overview"
+                          rows="3"
+                          placeholder="Describe the flavor profile, origin, or why this recipe is special..."
+                          class="w-full
+                                 bg-[#fcf9f8]
+                                 border border-[#dac1bc]
+                                 rounded
+                                 p-4
+                                 font-['Inter']
+                                 text-[16px]
+                                 text-[#1b1c1c]
+                                 outline-none
+                                 resize-none
+                                 focus:border-[#6d281a]
+                                 focus:ring-1
+                                 focus:ring-[#6d281a]
+                                 transition-all"></textarea>
 
-                    <label asp-for="Overview" class="form-label fw-semibold">
-                        Overview
-                    </label>
 
-                    <textarea asp-for="Overview"
-                              class="form-control"
-                              rows="4"
-                              placeholder="Tell us about your recipe...">
-                    </textarea>
+                <p class="mt-1
+                          font-['Inter']
+                          text-[12px]
+                          text-[#55433f]">
 
-                    <span asp-validation-for="Overview"
-                          class="text-danger">
-                    </span>
+                    A brief introduction sets the stage for your dish.
 
-                </div>
+                </p>
+
+
+                <span asp-validation-for="Overview"
+                      class="block
+                             mt-1
+                             font-['Inter']
+                             text-[12px]
+                             text-[#ba1a1a]">
+                </span>
+
+            </div>
+
+
+
+            <!-- ========================= -->
+            <!-- Ingredients + Steps -->
+            <!-- ========================= -->
+
+            <div class="grid
+                        grid-cols-1
+                        md:grid-cols-2
+                        gap-6">
 
 
                 <!-- Ingredients -->
-                <div class="mb-4">
+                <div>
 
                     <label asp-for="Ingredients"
-                           class="form-label fw-semibold">
+                           class="block
+                                  font-['Inter']
+                                  text-[14px]
+                                  font-semibold
+                                  tracking-[0.05em]
+                                  text-[#1b1c1c]
+                                  mb-1">
+
                         Ingredients
+
                     </label>
+
 
                     <textarea asp-for="Ingredients"
-                              class="form-control"
-                              rows="6"
-                              placeholder="e.g.&#10;2 cups flour&#10;1 tsp salt&#10;1 cup water">
-                    </textarea>
+                              rows="8"
+                              placeholder="1 cup all-purpose flour&#10;2 tbsp olive oil&#10;1 tsp salt..."
+                              class="w-full
+                                     bg-[#fcf9f8]
+                                     border border-[#dac1bc]
+                                     rounded
+                                     p-4
+                                     font-['Inter']
+                                     text-[16px]
+                                     leading-relaxed
+                                     text-[#1b1c1c]
+                                     outline-none
+                                     resize-none
+                                     focus:border-[#6d281a]
+                                     focus:ring-1
+                                     focus:ring-[#6d281a]
+                                     transition-all"></textarea>
+
+
+                    <p class="mt-1
+                              font-['Inter']
+                              text-[12px]
+                              text-[#55433f]">
+
+                        List one ingredient per line with precise measurements.
+
+                    </p>
+
 
                     <span asp-validation-for="Ingredients"
-                          class="text-danger">
+                          class="block
+                                 mt-1
+                                 font-['Inter']
+                                 text-[12px]
+                                 text-[#ba1a1a]">
                     </span>
 
                 </div>
 
 
-                <!-- Steps -->
-                <div class="mb-4">
+
+                <!-- Cooking Steps -->
+                <div>
 
                     <label asp-for="Steps"
-                           class="form-label fw-semibold">
+                           class="block
+                                  font-['Inter']
+                                  text-[14px]
+                                  font-semibold
+                                  tracking-[0.05em]
+                                  text-[#1b1c1c]
+                                  mb-1">
+
                         Cooking Steps
+
                     </label>
 
+
                     <textarea asp-for="Steps"
-                              class="form-control"
-                              rows="7"
-                              placeholder="Describe the cooking steps...">
-                    </textarea>
+                              rows="8"
+                              placeholder="1. Preheat the oven to 450°F.&#10;2. Mix the ingredients.&#10;3. Cook until ready..."
+                              class="w-full
+                                     bg-[#fcf9f8]
+                                     border border-[#dac1bc]
+                                     rounded
+                                     p-4
+                                     font-['Inter']
+                                     text-[16px]
+                                     leading-relaxed
+                                     text-[#1b1c1c]
+                                     outline-none
+                                     resize-none
+                                     focus:border-[#6d281a]
+                                     focus:ring-1
+                                     focus:ring-[#6d281a]
+                                     transition-all"></textarea>
+
+
+                    <p class="mt-1
+                              font-['Inter']
+                              text-[12px]
+                              text-[#55433f]">
+
+                        Detail each step clearly for the home cook.
+
+                    </p>
+
 
                     <span asp-validation-for="Steps"
-                          class="text-danger">
+                          class="block
+                                 mt-1
+                                 font-['Inter']
+                                 text-[12px]
+                                 text-[#ba1a1a]">
                     </span>
 
                 </div>
 
+            </div>
 
-                <!-- Image -->
-                <div class="mb-5">
 
-                    <label asp-for="ImageUrl"
-                           class="form-label fw-semibold">
-                        Recipe Image
-                    </label>
+
+            <!-- ========================= -->
+            <!-- Image URL -->
+            <!-- ========================= -->
+
+            <div>
+
+                <label asp-for="ImageUrl"
+                       class="block
+                              font-['Inter']
+                              text-[14px]
+                              font-semibold
+                              tracking-[0.05em]
+                              text-[#1b1c1c]
+                              mb-1">
+
+                    Featured Image URL
+
+                </label>
+
+
+                <div class="flex
+                            flex-col
+                            sm:flex-row
+                            gap-4
+                            items-stretch sm:items-center">
+
 
                     <input asp-for="ImageUrl"
-                           class="form-control"
-                           placeholder="Paste image URL..." />
+                           id="recipe-image"
+                           placeholder="https://example.com/image.jpg"
+                           class="flex-grow
+                                  w-full
+                                  bg-[#fcf9f8]
+                                  border border-[#dac1bc]
+                                  rounded
+                                  p-4
+                                  font-['Inter']
+                                  text-[16px]
+                                  text-[#1b1c1c]
+                                  outline-none
+                                  focus:border-[#6d281a]
+                                  focus:ring-1
+                                  focus:ring-[#6d281a]
+                                  transition-all" />
 
-                    <span asp-validation-for="ImageUrl"
-                          class="text-danger">
-                    </span>
 
-                    <div class="form-text">
-                        Add a direct URL to an image for your recipe.
+                    <!-- Image Preview -->
+                    <div class="w-20 h-20
+                                flex-shrink-0
+                                bg-[#f0eded]
+                                border border-[#dac1bc]
+                                rounded
+                                flex items-center
+                                justify-center
+                                text-[#55433f]
+                                overflow-hidden">
+
+
+                        <img id="image-preview"
+                             src=""
+                             alt="Recipe preview"
+                             class="hidden
+                                    w-full h-full
+                                    object-cover" />
+
+
+                        <span id="image-placeholder"
+                              class="material-symbols-outlined">
+
+                            image
+
+                        </span>
+
                     </div>
 
                 </div>
 
 
-                <!-- Buttons -->
-                <div class="d-flex gap-2">
+                <p class="mt-1
+                          font-['Inter']
+                          text-[12px]
+                          text-[#55433f]">
 
-                    <button type="submit"
-                            class="btn btn-primary">
-                        Create Recipe
-                    </button>
+                    Provide a high-quality link to showcase your dish.
 
-                    <a asp-action="Index"
-                       class="btn btn-outline-secondary">
-                        Cancel
-                    </a>
+                </p>
 
-                </div>
 
-            </form>
+                <span asp-validation-for="ImageUrl"
+                      class="block
+                             mt-1
+                             font-['Inter']
+                             text-[12px]
+                             text-[#ba1a1a]">
+                </span>
 
-        </div>
+            </div>
+
+
+
+            <!-- ========================= -->
+            <!-- Actions -->
+            <!-- ========================= -->
+
+            <div class="pt-10
+                        flex
+                        flex-col-reverse sm:flex-row
+                        justify-end
+                        gap-4
+                        border-t border-[#dac1bc]
+                        mt-10">
+
+
+                <a asp-action="Index"
+                   class="px-10 py-4
+                          border border-[#6d281a]
+                          text-[#6d281a]
+                          font-['Inter']
+                          text-[14px]
+                          font-semibold
+                          tracking-[0.05em]
+                          rounded
+                          text-center
+                          hover:bg-[#f6f3f2]
+                          transition-colors
+                          no-underline">
+
+                    Cancel
+
+                </a>
+
+
+                <button type="submit"
+                        class="px-10 py-4
+                               bg-[#8b3e2f]
+                               text-white
+                               font-['Inter']
+                               text-[14px]
+                               font-semibold
+                               tracking-[0.05em]
+                               rounded
+                               hover:opacity-90
+                               transition-opacity">
+
+                    Publish Recipe
+
+                </button>
+
+            </div>
+
+        </form>
 
     </div>
 
-</div>
+</section>
+
+
+
+<!-- ========================= -->
+<!-- Image Preview -->
+<!-- ========================= -->
+
+<script>
+
+    const imageInput = document.getElementById("recipe-image");
+    const imagePreview = document.getElementById("image-preview");
+    const imagePlaceholder = document.getElementById("image-placeholder");
+
+
+    function updateImagePreview() {
+
+        const url = imageInput.value.trim();
+
+        if (!url) {
+
+            imagePreview.classList.add("hidden");
+            imagePlaceholder.classList.remove("hidden");
+
+            return;
+        }
+
+
+        imagePreview.src = url;
+
+        imagePreview.onload = function () {
+
+            imagePreview.classList.remove("hidden");
+            imagePlaceholder.classList.add("hidden");
+
+        };
+
+
+        imagePreview.onerror = function () {
+
+            imagePreview.classList.add("hidden");
+            imagePlaceholder.classList.remove("hidden");
+
+        };
+
+    }
+
+
+    imageInput.addEventListener("input", updateImagePreview);
+
+
+    updateImagePreview();
+
+</script>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

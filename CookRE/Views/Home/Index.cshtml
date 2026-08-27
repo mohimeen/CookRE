@@ -1,34 +1,125 @@
 ﻿@model List<CookRE.Models.Recipe>
 
-<!-- Hero -->
-<section class="py-5 text-center">
+@{
+    ViewData["Title"] = "Home";
+}
 
-    <div class="container py-5">
 
-        <h1 class="display-3 fw-bold mb-4">
-            Discover the Art of Home Cooking
+<!-- ========================= -->
+<!-- Hero Section -->
+<!-- ========================= -->
+
+<section class="mt-6 md:mt-16
+                grid grid-cols-1 lg:grid-cols-12
+                gap-6 items-center
+                min-h-[716px]
+                border-b border-[#E5E1D8]
+                pb-16">
+
+    <!-- Hero Content -->
+    <div class="lg:col-span-5
+                flex flex-col gap-6
+                z-10 lg:pr-6">
+
+        <h1 class="font-['Playfair_Display']
+                   text-[36px] md:text-[48px]
+                   leading-[1.1]
+                   tracking-[-0.02em]
+                   font-bold
+                   text-[#1b1c1c]">
+
+            Discover the Art of
+
+            <i class="text-[#6d281a]">
+                Home Cooking
+            </i>
+
         </h1>
 
-        <p class="lead text-muted mx-auto mb-4"
-           style="max-width: 700px;">
-            Discover delicious recipes from home cooks
-            and share your own creations with the CookRE community.
+
+        <p class="font-['Inter']
+                  text-[18px]
+                  leading-[1.6]
+                  text-[#55433f]
+                  max-w-md">
+
+            Discover inspiring recipes from passionate home cooks
+            and share your own culinary creations with the CookRE community.
+
         </p>
 
-        <div class="d-flex justify-content-center gap-2 flex-wrap">
+
+        <!-- Search -->
+        <form asp-controller="Recipes"
+              asp-action="Index"
+              method="get"
+              class="relative w-full max-w-md mt-2">
+
+            <span class="material-symbols-outlined
+                         absolute left-4 top-1/2
+                         -translate-y-1/2
+                         text-[#87726e]">
+                search
+            </span>
+
+            <input type="text"
+                   name="search"
+                   placeholder="Search recipes or ingredients..."
+                   class="w-full
+                          bg-[#f6f3f2]
+                          border border-[#dac1bc]
+                          focus:border-[#8b3e2f]
+                          text-[#1b1c1c]
+                          py-4 pl-12 pr-4
+                          rounded-lg
+                          outline-none
+                          transition-colors
+                          placeholder:text-[#87726e]" />
+
+        </form>
+
+
+        <!-- Hero Actions -->
+        <div class="flex flex-wrap gap-4 mt-2">
 
             <a asp-controller="Recipes"
                asp-action="Index"
-               class="btn btn-primary btn-lg">
+               class="bg-[#8b3e2f]
+                      text-white
+                      font-['Inter']
+                      text-[14px]
+                      font-semibold
+                      tracking-[0.05em]
+                      px-8 py-4
+                      rounded
+                      hover:bg-[#964737]
+                      transition-colors
+                      shadow-[0_8px_24px_rgba(45,45,45,0.05)]
+                      no-underline">
+
                 Explore Recipes
+
             </a>
+
 
             @if (User.Identity?.IsAuthenticated == true)
             {
                 <a asp-controller="Recipes"
                    asp-action="Create"
-                   class="btn btn-outline-secondary btn-lg">
+                   class="border border-[#8b3e2f]
+                              text-[#8b3e2f]
+                              font-['Inter']
+                              text-[14px]
+                              font-semibold
+                              tracking-[0.05em]
+                              px-8 py-4
+                              rounded
+                              hover:bg-[#f6f3f2]
+                              transition-colors
+                              no-underline">
+
                     Share a Recipe
+
                 </a>
             }
 
@@ -36,98 +127,248 @@
 
     </div>
 
+
+    <!-- Hero Image -->
+    <div class="lg:col-span-7
+                h-[512px] lg:h-[716px]
+                w-full relative">
+
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDv8aPLubUKNkOcy1STAbK1EQVXXFjPTa7KsWeRGdPmA0zXiHja_HlywxcqJGpsktFpo-wfTO63JQSQuA8M1n6-5zipvY_1KyqC4wsSFyxqA8vZSbX6JYNCJi_u7z2nW-byT2GC53okQXtGkeweg-MOVVg7FyeI67U9IDB8T3c8Y_31WH9crTNLU3Hrpt1Guoxa4tEdigdgxb3tXEmAYgs0nzYT4_fk9O5h6oTEj8MicMuBYNarmb7W"
+             alt="Artisan bread"
+             class="absolute inset-0
+                    w-full h-full
+                    object-cover object-center
+                    rounded-lg
+                    shadow-lg" />
+
+    </div>
+
 </section>
 
 
-<!-- Featured Recipes -->
-<section class="container py-5">
 
-    <div class="text-center mb-5">
+<!-- ========================= -->
+<!-- Latest Recipes -->
+<!-- ========================= -->
 
-        <h2 class="fw-bold">
-            Latest Recipes
-        </h2>
+<section class="mt-16">
 
-        <p class="text-muted">
-            Fresh recipes shared by our community.
-        </p>
+    <!-- Section Header -->
+    <div class="flex justify-between
+                items-end
+                mb-10
+                border-b border-[#E5E1D8]
+                pb-2">
+
+        <div>
+
+            <h2 class="font-['Playfair_Display']
+                       text-[32px]
+                       leading-[1.2]
+                       font-semibold
+                       text-[#1b1c1c]">
+
+                Latest Recipes
+
+            </h2>
+
+            <p class="font-['Inter']
+                      text-[16px]
+                      leading-[1.6]
+                      text-[#55433f]
+                      mt-1">
+
+                Fresh recipes shared by our community.
+
+            </p>
+
+        </div>
+
+
+        <a asp-controller="Recipes"
+           asp-action="Index"
+           class="hidden md:flex
+                  items-center gap-1
+                  font-['Inter']
+                  text-[14px]
+                  font-semibold
+                  tracking-[0.05em]
+                  text-[#6d281a]
+                  hover:text-[#8b3e2f]
+                  transition-colors
+                  no-underline">
+
+            View All
+
+            <span class="material-symbols-outlined text-sm">
+                arrow_forward
+            </span>
+
+        </a>
 
     </div>
 
 
     @if (Model.Any())
     {
-        <div class="row g-4">
+        <!-- Recipe Grid -->
+        <div class="grid grid-cols-1
+                        md:grid-cols-2
+                        lg:grid-cols-3
+                        gap-6
+                        justify-items-start">
 
             @foreach (var recipe in Model)
             {
-                <div class="col-12 col-md-6 col-lg-4">
+                <article class="group">
 
-                    <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                    <!-- Image -->
+                    <a asp-controller="Recipes"
+                       asp-action="Details"
+                       asp-route-id="@recipe.Id"
+                       class="block no-underline">
 
-                        @if (!string.IsNullOrEmpty(recipe.ImageUrl))
-                        {
-                            <img src="@recipe.ImageUrl"
-                                 class="card-img-top"
-                                 alt="@recipe.Name"
-                                 style="height: 230px; object-fit: cover;" />
-                        }
-                        else
-                        {
-                            <div class="bg-light d-flex justify-content-center align-items-center text-muted"
-                                 style="height: 230px;">
-                                No Image
-                            </div>
-                        }
+                        <div class="aspect-[3/4]
+                                            w-full
+                                            overflow-hidden
+                                            rounded-lg
+                                            mb-4
+                                            bg-[#f6f3f2]
+                                            relative">
 
-                        <div class="card-body d-flex flex-column p-4">
+                            @if (!string.IsNullOrEmpty(recipe.ImageUrl))
+                            {
+                                <img src="@recipe.ImageUrl"
+                                     alt="@recipe.Name"
+                                     class="w-full h-full
+                                                        object-cover
+                                                        transition-transform
+                                                        duration-700
+                                                        group-hover:scale-105" />
+                            }
+                            else
+                            {
+                                <div class="w-full h-full
+                                                        flex items-center
+                                                        justify-center
+                                                        text-[#87726e]">
 
-                            <h3 class="h4 fw-bold">
-                                @recipe.Name
-                            </h3>
+                                    <span class="material-symbols-outlined text-5xl">
+                                        image
+                                    </span>
 
-                            <p class="text-muted">
-                                @recipe.Overview
-                            </p>
-
-                            <div class="mt-auto">
-
-                                <a asp-controller="Recipes"
-                                   asp-action="Details"
-                                   asp-route-id="@recipe.Id"
-                                   class="btn btn-primary">
-                                    View Recipe
-                                </a>
-
-                            </div>
+                                </div>
+                            }
 
                         </div>
 
+
+                        <!-- Recipe Name -->
+                        <h3 class="font-['Playfair_Display']
+                                           text-[24px]
+                                           leading-[1.3]
+                                           font-semibold
+                                           text-[#1b1c1c]
+                                           group-hover:text-[#6d281a]
+                                           transition-colors">
+
+                            @recipe.Name
+
+                        </h3>
+
+
+                        <!-- Overview -->
+                        <p class="font-['Inter']
+                                          text-[16px]
+                                          leading-[1.6]
+                                          text-[#55433f]
+                                          mt-2">
+
+                            @recipe.Overview
+
+                        </p>
+
+                    </a>
+
+
+                    <!-- View Link -->
+                    <div class="mt-4">
+
+                        <a asp-controller="Recipes"
+                           asp-action="Details"
+                           asp-route-id="@recipe.Id"
+                           class="inline-flex
+                                          items-center gap-1
+                                          font-['Inter']
+                                          text-[14px]
+                                          font-semibold
+                                          tracking-[0.05em]
+                                          text-[#56624a]
+                                          hover:text-[#6d281a]
+                                          transition-colors
+                                          no-underline">
+
+                            View Recipe
+
+                            <span class="material-symbols-outlined text-sm">
+                                arrow_forward
+                            </span>
+
+                        </a>
+
                     </div>
 
-                </div>
+                </article>
             }
 
         </div>
     }
     else
     {
-        <div class="text-center py-5">
+        <!-- Empty State -->
+        <div class="py-20 text-center">
 
-            <p class="text-muted">
-                No recipes have been shared yet.
+            <span class="material-symbols-outlined
+                             text-[48px]
+                             text-[#87726e]">
+                restaurant_menu
+            </span>
+
+            <h3 class="font-['Playfair_Display']
+                           text-2xl
+                           font-semibold
+                           mt-4">
+
+                No recipes yet
+
+            </h3>
+
+            <p class="text-[#55433f] mt-2">
+                Be the first to share something delicious.
             </p>
 
         </div>
     }
 
 
-    <div class="text-center mt-5">
+    <!-- Mobile View All -->
+    <div class="md:hidden mt-6 flex justify-center">
 
         <a asp-controller="Recipes"
            asp-action="Index"
-           class="btn btn-outline-secondary">
+           class="font-['Inter']
+                  text-[14px]
+                  font-semibold
+                  text-[#6d281a]
+                  border border-[#6d281a]
+                  px-6 py-2
+                  rounded
+                  hover:bg-[#f6f3f2]
+                  transition-colors
+                  no-underline">
+
             View All Recipes
+
         </a>
 
     </div>
@@ -135,35 +376,122 @@
 </section>
 
 
-<!-- CTA -->
-<section class="container py-5">
 
-    <div class="bg-light rounded-4 p-5 text-center">
+<!-- ========================= -->
+<!-- Community CTA -->
+<!-- ========================= -->
 
-        <h2 class="fw-bold mb-3">
-            Share Your Secret Recipe
+<section class="mt-16
+                bg-[#d9e7c8]
+                text-[#141f0b]
+                rounded-xl
+                p-6 md:p-16
+                flex flex-col md:flex-row
+                items-center
+                justify-between
+                gap-10
+                relative
+                overflow-hidden">
+
+    <!-- Decoration -->
+    <div class="absolute
+                top-0 right-0
+                w-64 h-64
+                bg-[#56624a]
+                opacity-10
+                rounded-full
+                blur-3xl
+                -translate-y-1/2
+                translate-x-1/4
+                pointer-events-none">
+    </div>
+
+
+    <!-- Text -->
+    <div class="max-w-xl z-10">
+
+        <h2 class="font-['Playfair_Display']
+                   text-[32px]
+                   leading-[1.2]
+                   font-semibold
+                   mb-2">
+
+            Share Your Culinary Story
+
         </h2>
 
-        <p class="text-muted mb-4">
-            Bring your favorite recipes to the CookRE community.
+        <p class="font-['Inter']
+                  text-[18px]
+                  leading-[1.6]
+                  text-[#3e4a34]
+                  mb-6">
+
+            Join our community of passionate home cooks.
+            Share your family recipes, kitchen experiments,
+            and inspire others with your culinary creations.
+
         </p>
+
 
         @if (User.Identity?.IsAuthenticated == true)
         {
             <a asp-controller="Recipes"
                asp-action="Create"
-               class="btn btn-primary">
-                Create Recipe
+               class="inline-block
+                          bg-[#8b3e2f]
+                          text-white
+                          font-['Inter']
+                          text-[14px]
+                          font-semibold
+                          tracking-[0.05em]
+                          px-8 py-4
+                          rounded
+                          hover:bg-[#964737]
+                          transition-colors
+                          no-underline">
+
+                Create a Recipe
+
             </a>
         }
         else
         {
             <a asp-area="Identity"
                asp-page="/Account/Register"
-               class="btn btn-primary">
+               class="inline-block
+                          bg-[#8b3e2f]
+                          text-white
+                          font-['Inter']
+                          text-[14px]
+                          font-semibold
+                          tracking-[0.05em]
+                          px-8 py-4
+                          rounded
+                          hover:bg-[#964737]
+                          transition-colors
+                          no-underline">
+
                 Join CookRE
+
             </a>
         }
+
+    </div>
+
+
+    <!-- CTA Image -->
+    <div class="w-full md:w-1/3
+                aspect-square
+                relative z-10
+                hidden md:block">
+
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYCQhwuq3v8ZO2ev0sRz5UOyFScR1cVnerx2FUZRxkfhtLvDpJKHigOWZFuNCarGofet3plIeZ3y3r-xxa2n1Z1Qgw77ACXXorlTEm71tYW-Ge7vzZxA7uDKvKeI7fTMe31e5GhidPC-8_Szhc7_D9EnJVPsaMW8Dcwe8bJahjnxMpiMirWQdQcbJkp9MI2kHi_Ucg4-24Q7JGYleC8-lT86-O294Oqsi2U64IFmZdBcHtPyJsmBYS"
+             alt="Making pasta"
+             class="absolute inset-0
+                    w-full h-full
+                    object-cover
+                    rounded-full
+                    border-4 border-[#fcf9f8]" />
 
     </div>
 

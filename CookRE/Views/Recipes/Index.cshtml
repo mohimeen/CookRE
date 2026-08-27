@@ -1,203 +1,426 @@
 ﻿@using System.Security.Claims
 @model List<CookRE.Models.Recipe>
 
-<div class="container py-5">
+@{
+    ViewData["Title"] = "Explore Recipes";
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+}
 
-    <!-- Page Header -->
-    <div class="text-center mb-5">
+<section class="py-10 md:py-16">
+
+    <!-- ========================= -->
+    <!-- Header + Search -->
+    <!-- ========================= -->
+
+    <header class="mb-16
+                   flex flex-col
+                   md:flex-row
+                   md:items-end
+                   justify-between
+                   gap-10">
 
         <div>
-            <h1 class="fw-bold mb-2">Explore Recipes</h1>
 
-            <p class="text-muted mb-0">
-                Discover recipes shared by the CookRE community.
+            <h1 class="font-['Playfair_Display']
+                       text-[36px] md:text-[48px]
+                       leading-[1.1]
+                       font-bold
+                       text-[#6d281a]
+                       mb-2">
+
+                Explore Recipes
+
+            </h1>
+
+            <p class="font-['Inter']
+                      text-[18px]
+                      leading-[1.6]
+                      text-[#55433f]
+                      max-w-2xl">
+
+                Discover culinary inspiration shared by the CookRE community.
+
             </p>
+
         </div>
 
-       
 
-    </div>
+        <!-- Search -->
+        <form asp-action="Index"
+              method="get"
+              class="flex-grow max-w-md w-full relative">
 
+            <span class="material-symbols-outlined
+                         absolute left-4 top-1/2
+                         -translate-y-1/2
+                         text-[#87726e]">
 
-    <!-- Search -->
-    <form asp-action="Index"
-          method="get"
-          class="mb-5">
+                search
 
-        <div class="input-group input-group-lg">
+            </span>
 
             <input type="text"
                    name="search"
-                   class="form-control"
-                   placeholder="Search recipes..." />
+                   placeholder="Search recipes or ingredients..."
+                   class="w-full
+                          bg-[#fcf9f8]
+                          border-0
+                          border-b
+                          border-[#dac1bc]
+                          focus:border-[#6d281a]
+                          py-4
+                          pl-12
+                          pr-4
+                          font-['Inter']
+                          text-[16px]
+                          text-[#1b1c1c]
+                          outline-none
+                          transition-colors
+                          placeholder:text-[#87726e]" />
 
-            <button type="submit"
-                    class="btn btn-primary">
-                Search
-            </button>
+        </form>
 
-        </div>
-
-    </form>
+    </header>
 
 
-    <!-- Empty Search Result -->
+
+    <!-- ========================= -->
+    <!-- Empty State -->
+    <!-- ========================= -->
     @if (!Model.Any())
     {
-        <div class="text-center py-5">
+        <div class="py-24 text-center
+                        border-y border-[#dac1bc]">
 
-            <h3 class="fw-semibold">
-                No recipes found.
-            </h3>
+            <span class="material-symbols-outlined
+                             text-[56px]
+                             text-[#87726e]">
 
-            <p class="text-muted">
+                restaurant_menu
+
+            </span>
+
+            <h2 class="font-['Playfair_Display']
+                           text-[28px]
+                           font-semibold
+                           text-[#1b1c1c]
+                           mt-5">
+
+                No recipes found
+
+            </h2>
+
+            <p class="font-['Inter']
+                          text-[#55433f]
+                          mt-2">
+
                 Try searching for something else.
+
             </p>
 
             <a asp-action="Index"
-               class="btn btn-outline-secondary">
+               class="inline-block
+                          mt-6
+                          border border-[#6d281a]
+                          text-[#6d281a]
+                          px-6 py-3
+                          font-semibold
+                          hover:bg-[#f6f3f2]
+                          transition-colors
+                          no-underline">
+
                 View All Recipes
+
             </a>
 
         </div>
     }
     else
     {
+
+        <!-- ========================= -->
         <!-- Recipe Grid -->
-        <div class="row g-4">
+        <!-- ========================= -->
+
+        <section class="grid
+                            grid-cols-1
+                            md:grid-cols-2
+                            lg:grid-cols-3
+                            gap-6 lg:gap-10">
 
             @foreach (var recipe in Model)
             {
-                <div class="col-12 col-md-6 col-lg-4">
+                <article class="group
+                                        relative
+                                        flex flex-col
+                                        bg-[#fcf9f8]
+                                        border border-[#dac1bc]
+                                        hover:shadow-[0_8px_24px_rgba(45,45,45,0.05)]
+                                        transition-shadow
+                                        duration-300">
 
-                    <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                    <!-- Image -->
+                    <div class="aspect-[3/4]
+                                        overflow-hidden
+                                        relative
+                                        bg-[#f6f3f2]">
 
                         @if (!string.IsNullOrEmpty(recipe.ImageUrl))
                         {
                             <img src="@recipe.ImageUrl"
-                                 class="card-img-top"
                                  alt="@recipe.Name"
-                                 style="height: 230px; object-fit: cover;" />
+                                 class="w-full h-full
+                                                    object-cover
+                                                    group-hover:scale-105
+                                                    transition-transform
+                                                    duration-700
+                                                    ease-in-out" />
                         }
                         else
                         {
-                            <div class="bg-light d-flex align-items-center justify-content-center text-muted"
-                                 style="height: 230px;">
-                                No Image
+                            <div class="w-full h-full
+                                                    flex items-center
+                                                    justify-center
+                                                    text-[#87726e]">
+
+                                <span class="material-symbols-outlined text-[52px]">
+                                    image
+                                </span>
+
                             </div>
                         }
 
-                        <div class="card-body d-flex flex-column p-4">
 
-                            <h3 class="card-title h4 fw-bold">
-                                @recipe.Name
-                            </h3>
+                        <!-- Owner Actions -->
+                        @if (currentUserId == recipe.UserId)
+                        {
+                            <div class="absolute
+                                                    top-3 right-3
+                                                    flex gap-1
+                                                    opacity-0
+                                                    group-hover:opacity-100
+                                                    transition-opacity
+                                                    bg-[#fcf9f8]/90
+                                                    backdrop-blur-sm
+                                                    p-1
+                                                    rounded">
 
-                            <p class="card-text text-muted">
-                                @recipe.Overview
-                            </p>
-
-                            <div class="mt-auto pt-3">
-
-                                <a asp-action="Details"
+                                <!-- Edit -->
+                                <a asp-action="Edit"
                                    asp-route-id="@recipe.Id"
-                                   class="btn btn-primary">
-                                    View Recipe
+                                   title="Edit"
+                                   class="p-2
+                                                      text-[#55433f]
+                                                      hover:text-[#6d281a]
+                                                      transition-colors
+                                                      no-underline">
+
+                                    <span class="material-symbols-outlined text-[18px]">
+                                        edit
+                                    </span>
+
                                 </a>
 
-                                @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == recipe.UserId)
-                                {
-                                    <a asp-action="Edit"
-                                       asp-route-id="@recipe.Id"
-                                       class="btn btn-outline-secondary">
-                                        Edit
-                                    </a>
 
-                                    <button type="button"
-                                            class="btn btn-outline-danger"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal-@recipe.Id">
-                                        Delete
-                                    </button>
-                                }
+                                <!-- Delete -->
+                                <button type="button"
+                                        title="Delete"
+                                        onclick="document.getElementById('deleteModal-@recipe.Id').showModal()"
+                                        class="p-2
+                                                           text-[#55433f]
+                                                           hover:text-[#ba1a1a]
+                                                           transition-colors">
+
+                                    <span class="material-symbols-outlined text-[18px]">
+                                        delete
+                                    </span>
+
+                                </button>
 
                             </div>
-
-                        </div>
+                        }
 
                     </div>
 
 
-                    @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == recipe.UserId)
-                    {
-                        <!-- Delete Modal -->
-                        <div class="modal fade"
-                             id="deleteModal-@recipe.Id"
-                             tabindex="-1"
-                             aria-hidden="true">
 
-                            <div class="modal-dialog modal-dialog-centered">
+                    <!-- Content -->
+                    <div class="p-6
+                                        flex flex-col
+                                        flex-grow">
 
-                                <div class="modal-content">
+                        <h2 class="font-['Playfair_Display']
+                                           text-[24px]
+                                           leading-[1.3]
+                                           font-semibold
+                                           text-[#1b1c1c]
+                                           mb-1">
 
-                                    <div class="modal-header">
+                            @recipe.Name
 
-                                        <h5 class="modal-title">
-                                            Delete Recipe
-                                        </h5>
+                        </h2>
 
-                                        <button type="button"
-                                                class="btn-close"
-                                                data-bs-dismiss="modal">
-                                        </button>
 
-                                    </div>
+                        <p class="font-['Inter']
+                                          text-[16px]
+                                          leading-[1.6]
+                                          text-[#55433f]
+                                          mb-4
+                                          flex-grow">
 
-                                    <div class="modal-body">
+                            @recipe.Overview
 
-                                        <p>
-                                            Are you sure you want to delete
-                                            <strong>@recipe.Name</strong>?
-                                        </p>
+                        </p>
 
-                                        <p class="text-muted mb-0">
-                                            This action cannot be undone.
-                                        </p>
 
-                                    </div>
+                        <a asp-action="Details"
+                           asp-route-id="@recipe.Id"
+                           class="font-['Inter']
+                                          text-[14px]
+                                          font-semibold
+                                          tracking-[0.05em]
+                                          text-[#6d281a]
+                                          hover:text-[#8b3e2f]
+                                          transition-colors
+                                          flex items-center
+                                          gap-1
+                                          mt-auto
+                                          no-underline">
 
-                                    <div class="modal-footer">
+                            View Recipe
 
-                                        <button type="button"
-                                                class="btn btn-secondary"
-                                                data-bs-dismiss="modal">
-                                            Cancel
-                                        </button>
+                            <span class="material-symbols-outlined text-[16px]">
+                                arrow_forward
+                            </span>
 
-                                        <form asp-action="Delete"
-                                              asp-route-id="@recipe.Id"
-                                              method="post">
+                        </a>
 
-                                            <button type="submit"
-                                                    class="btn btn-danger">
-                                                Delete
-                                            </button>
+                    </div>
 
-                                        </form>
+                </article>
 
-                                    </div>
+
+
+                @if (currentUserId == recipe.UserId)
+                {
+                    <!-- ========================= -->
+                    <!-- Delete Modal -->
+                    <!-- ========================= -->
+
+                    <dialog id="deleteModal-@recipe.Id"
+                            class="m-auto
+                                               w-[calc(100%-32px)]
+                                               max-w-md
+                                               bg-[#fcf9f8]
+                                               p-0
+                                               border border-[#dac1bc]
+                                               shadow-2xl
+                                               backdrop:bg-black/60">
+
+                        <div class="p-7">
+
+                            <div class="flex items-start
+                                                    justify-between
+                                                    gap-4">
+
+                                <div>
+
+                                    <p class="font-['Inter']
+                                                          text-[12px]
+                                                          font-semibold
+                                                          tracking-[0.08em]
+                                                          uppercase
+                                                          text-[#ba1a1a]
+                                                          mb-2">
+
+                                        Delete Recipe
+
+                                    </p>
+
+                                    <h2 class="font-['Playfair_Display']
+                                                           text-[26px]
+                                                           font-semibold
+                                                           text-[#1b1c1c]">
+
+                                        Delete @recipe.Name?
+
+                                    </h2>
 
                                 </div>
+
+
+                                <button type="button"
+                                        onclick="document.getElementById('deleteModal-@recipe.Id').close()"
+                                        class="text-[#87726e]
+                                                           hover:text-[#1b1c1c]">
+
+                                    <span class="material-symbols-outlined">
+                                        close
+                                    </span>
+
+                                </button>
+
+                            </div>
+
+
+                            <p class="font-['Inter']
+                                                  text-[15px]
+                                                  leading-[1.6]
+                                                  text-[#55433f]
+                                                  mt-4">
+
+                                This recipe will be permanently deleted.
+                                This action cannot be undone.
+
+                            </p>
+
+
+                            <div class="flex
+                                                    justify-end
+                                                    gap-3
+                                                    mt-7">
+
+                                <button type="button"
+                                        onclick="document.getElementById('deleteModal-@recipe.Id').close()"
+                                        class="border border-[#87726e]
+                                                           text-[#55433f]
+                                                           px-5 py-2.5
+                                                           font-semibold
+                                                           hover:bg-[#f6f3f2]
+                                                           transition-colors">
+
+                                    Cancel
+
+                                </button>
+
+
+                                <form asp-action="Delete"
+                                      asp-route-id="@recipe.Id"
+                                      method="post">
+
+                                    <button type="submit"
+                                            class="bg-[#ba1a1a]
+                                                               text-white
+                                                               px-5 py-2.5
+                                                               font-semibold
+                                                               hover:opacity-90
+                                                               transition-opacity">
+
+                                        Delete
+
+                                    </button>
+
+                                </form>
 
                             </div>
 
                         </div>
-                    }
 
-                </div>
+                    </dialog>
+                }
             }
 
-        </div>
+        </section>
     }
 
-</div>
+</section>

@@ -1,81 +1,415 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>@ViewData["Title"] - CookRE</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/CookRE.styles.css" asp-append-version="true" />
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@100..900&display=swap"
+          rel="stylesheet" />
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+          rel="stylesheet" />
+
+    <!-- Bootstrap - TEMPORARY -->
+   @*  <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/CookRE.styles.css"
+          asp-append-version="true" />
+ *@
+    <!-- Tailwind -->
+    <link rel="stylesheet"
+          href="~/css/tailwind.css"
+          asp-append-version="true" />
+
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CookRE</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark"
-                               asp-controller="Home"
-                               asp-action="Index">
-                                Home
-                            </a>
-                        </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark"
-                               asp-controller="Recipes"
-                               asp-action="Index">
-                                Recipes
-                            </a>
-                        </li>
+<body class="bg-[#fcf9f8] text-[#1b1c1c] font-['Inter'] antialiased overflow-x-hidden min-h-screen flex flex-col">
 
-                        @if (User.Identity?.IsAuthenticated == true)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark"
-                                   asp-controller="Recipes"
-                                   asp-action="MyRecipes">
-                                    My Recipes
-                                </a>
-                            </li>
+    @{
+        var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+        var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+    }
 
-                            <li class="nav-item">
-                                <a class="nav-link text-dark"
-                                   asp-controller="Recipes"
-                                   asp-action="Create">
-                                    Create Recipe
-                                </a>
-                            </li>
-                        }
+    <!-- ========================= -->
+    <!-- Desktop Navbar -->
+    <!-- ========================= -->
+    <!-- TopNavBar (Web) -->
+    <header class="hidden md:flex bg-background border-b border-outline-variant w-full sticky top-0 z-50">
 
-                    </ul>
+        <div class="flex justify-between items-center w-full px-margin-desktop max-w-[1280px] mx-auto h-20">
 
-                    <partial name="_LoginPartial" />
-                </div>
+            <!-- Logo -->
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="font-headline-md text-[32px] font-bold text-[#6d281a] no-underline">
+                CookRE
+            </a>
+
+
+            <!-- Navigation -->
+            <nav class="hidden md:flex items-center gap-8">
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="@(currentController == "Home" && currentAction == "Index"
+                           ? "text-[#6d281a] border-b-2 border-[#6d281a] pb-1"
+                           : "text-[#55433f] hover:text-[#6d281a]")
+                           text-[14px] font-semibold tracking-[0.05em]
+                           transition-all duration-200 hover:scale-95 no-underline">
+                        Home
+                </a>
+
+                <a asp-controller="Recipes"
+                   asp-action="Index"
+                   class="@(currentController == "Recipes" && currentAction == "Index"
+                           ? "text-[#6d281a] border-b-2 border-[#6d281a] pb-1"
+                           : "text-[#55433f] hover:text-[#6d281a]")
+                           text-[14px] font-semibold tracking-[0.05em]
+                           transition-all duration-200 hover:scale-95 no-underline">
+                    Explore Recipes
+                </a>
+
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a asp-controller="Recipes"
+                       asp-action="MyRecipes"
+                       class="@(currentController == "Recipes" && currentAction == "MyRecipes"
+                               ? "text-[#6d281a] border-b-2 border-[#6d281a] pb-1"
+                               : "text-[#55433f] hover:text-[#6d281a]")
+                               text-[14px] font-semibold tracking-[0.05em]
+                               transition-all duration-200 hover:scale-95 no-underline">
+                       My Recipes
+                </a>
+
+                    <a asp-controller="Recipes"
+                       asp-action="Create"
+                       class="@(currentController == "Recipes" && currentAction == "Create"
+                           ? "text-[#6d281a] border-b-2 border-[#6d281a] pb-1"
+                           : "text-[#55433f] hover:text-[#6d281a]")
+                            text-[14px] font-semibold tracking-[0.05em]
+                            transition-all duration-200 hover:scale-95 no-underline">
+                    Create Recipe
+                </a>
+                }
+
+            </nav>
+
+
+            <!-- Account -->
+            <div class="flex items-center gap-4">
+
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <span class="font-label-md text-[14px] text-[#55433f]">
+                        @User.Identity.Name
+                    </span>
+
+                    <form asp-area="Identity"
+                          asp-page="/Account/Logout"
+                          method="post"
+                          class="m-0">
+
+                        <button type="submit"
+                                class="px-4 py-2
+                       border border-[#6d281a]
+                       text-[#6d281a]
+                       text-[14px]
+                       font-semibold
+                       tracking-[0.05em]
+                       rounded
+                       hover:bg-[#6d281a]
+                       hover:text-white
+                       transition-all
+                       duration-200
+                       hover:-translate-y-[1px]
+                       active:translate-y-0">
+
+                            Logout
+
+                        </button>
+
+                    </form>
+                }
+                else
+                {
+                    <a asp-area="Identity"
+                       asp-page="/Account/Login"
+                       class="h-10 px-6
+              inline-flex items-center justify-center
+              border border-[#6d281a]
+              text-[#6d281a]
+              text-[14px] font-semibold
+              tracking-[0.05em]
+              rounded
+              hover:bg-[#6d281a]
+              hover:text-white
+              transition-all duration-200
+              hover:-translate-y-[1px]
+              active:translate-y-0
+              no-underline">
+                        Login
+                    </a>
+
+                    <a asp-area="Identity"
+                       asp-page="/Account/Register"
+                       class="h-10 px-6
+              inline-flex items-center justify-center
+              border border-[#8b3e2f]
+              bg-[#8b3e2f]
+              text-white
+              text-[14px] font-semibold
+              tracking-[0.05em]
+              rounded
+              hover:bg-[#6d281a]
+              hover:border-[#6d281a]
+              transition-all duration-200
+              hover:-translate-y-[1px]
+              active:translate-y-0
+              no-underline">
+                        Register
+                    </a>
+                }
+
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - CookRE - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
+
+    </header>
+
+
+
+    <!-- ========================= -->
+    <!-- Mobile Bottom Navbar -->
+    <!-- ========================= -->
+
+    <nav class="md:hidden fixed bottom-0 left-0 w-full
+                bg-[#fcf9f8] border-t border-[#dac1bc]
+                z-50 shadow-[0_-4px_16px_rgba(45,45,45,0.05)]">
+
+        <div class="flex justify-around items-center h-16">
+
+            <!-- Home -->
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="flex flex-col items-center gap-1 text-[#6d281a]
+                      w-1/4 no-underline">
+
+                <span class="material-symbols-outlined">
+                    home
+                </span>
+
+                <span class="text-[10px]">
+                    Home
+                </span>
+
+            </a>
+
+
+            <!-- Explore -->
+            <a asp-controller="Recipes"
+               asp-action="Index"
+               class="flex flex-col items-center gap-1 text-[#55433f]
+                      w-1/4 no-underline">
+
+                <span class="material-symbols-outlined">
+                    restaurant_menu
+                </span>
+
+                <span class="text-[10px]">
+                    Explore
+                </span>
+
+            </a>
+
+
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <!-- My Recipes -->
+                <a asp-controller="Recipes"
+                   asp-action="MyRecipes"
+                   class="flex flex-col items-center gap-1 text-[#55433f]
+                              w-1/4 no-underline">
+
+                    <span class="material-symbols-outlined">
+                        book
+                    </span>
+
+                    <span class="text-[10px]">
+                        My Recipes
+                    </span>
+
+                </a>
+
+
+                <!-- Create -->
+                <a asp-controller="Recipes"
+                   asp-action="Create"
+                   class="flex flex-col items-center gap-1 text-[#55433f]
+                              w-1/4 no-underline">
+
+                    <span class="material-symbols-outlined">
+                        add_circle
+                    </span>
+
+                    <span class="text-[10px]">
+                        Create
+                    </span>
+
+                </a>
+            }
+            else
+            {
+                <!-- Login -->
+                <a asp-area="Identity"
+                   asp-page="/Account/Login"
+                   class="flex flex-col items-center gap-1 text-[#55433f]
+                              w-1/4 no-underline">
+
+                    <span class="material-symbols-outlined">
+                        login
+                    </span>
+
+                    <span class="text-[10px]">
+                        Login
+                    </span>
+
+                </a>
+
+
+                <!-- Register -->
+                <a asp-area="Identity"
+                   asp-page="/Account/Register"
+                   class="flex flex-col items-center gap-1 text-[#55433f]
+                              w-1/4 no-underline">
+
+                    <span class="material-symbols-outlined">
+                        person_add
+                    </span>
+
+                    <span class="text-[10px]">
+                        Register
+                    </span>
+
+                </a>
+            }
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- ========================= -->
+    <!-- Page Content -->
+    <!-- ========================= -->
+
+    <main class="flex-grow w-full max-w-[1280px] mx-auto
+                 px-4 md:px-12
+                 pb-24 md:pb-16">
+
+        @RenderBody()
+
+    </main>
+
+
+
+    <!-- ========================= -->
+    <!-- Footer -->
+    <!-- ========================= -->
+
+    <footer class="bg-[#fcf9f8] border-t border-[#dac1bc]
+                   w-full mt-auto">
+
+        <div class="flex flex-col items-center gap-8
+                    w-full py-16 px-4 md:px-12
+                    max-w-[1280px] mx-auto">
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="font-['Playfair_Display']
+                      text-2xl font-bold text-[#6d281a]
+                      no-underline">
+
+                CookRE
+
+            </a>
+
+
+            <nav class="flex flex-wrap justify-center gap-x-8 gap-y-4">
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="text-[#55433f]
+                          hover:text-[#6d281a]
+                          hover:underline
+                          no-underline">
+
+                    Home
+
+                </a>
+
+
+                <a asp-controller="Recipes"
+                   asp-action="Index"
+                   class="text-[#55433f]
+                          hover:text-[#6d281a]
+                          hover:underline
+                          no-underline">
+
+                    Explore Recipes
+
+                </a>
+
+
+                <a asp-controller="Home"
+                   asp-action="Privacy"
+                   class="text-[#55433f]
+                          hover:text-[#6d281a]
+                          hover:underline
+                          no-underline">
+
+                    Privacy Policy
+
+                </a>
+
+            </nav>
+
+
+            <p class="text-[12px] text-[#55433f] mb-0">
+
+                © 2026 CookRE. All rights reserved.
+
+            </p>
+
+        </div>
+
     </footer>
+
+
+
+    <!-- Bootstrap JS - TEMPORARY -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/js/site.js"
+            asp-append-version="true"></script>
+
+
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
+
 </html>
