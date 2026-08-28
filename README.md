@@ -88,7 +88,7 @@ For example:
 
 Browse and search through recipes shared on CookRE.
 
-![Explore Recipes](screenshots/explore.png)
+![Explore Recipes](screenshots/Explore.png)
 
 ---
 
